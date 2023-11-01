@@ -1,8 +1,10 @@
-﻿namespace Domain.UnitTests.Entity.UnidadeDeMedida;
+﻿using Domain.Exceptions;
+
+namespace Domain.UnitTests.Entity.UnidadeDeMedida;
 
 public class UnidadeDeMedidaTest
 {
-    [Fact(DisplayName = nameof(InstanciaComAbreviacaoDescricao))]
+    [Fact]
     public void InstanciaComAbreviacaoDescricao()
     {
         var validData = new
@@ -25,7 +27,7 @@ public class UnidadeDeMedidaTest
         Assert.True(unidadeDeMedida.Ativo);
     }
 
-    [Theory(DisplayName = nameof(InstanciaComAbreviacaoDescricaoAtivo))]
+    [Theory]
     [InlineData(true)]
     [InlineData(false)]
     public void InstanciaComAbreviacaoDescricaoAtivo(bool ativo)
@@ -50,4 +52,19 @@ public class UnidadeDeMedidaTest
         Assert.InRange(unidadeDeMedida.CriadoEm, dataAntes, dataDepois);
         Assert.Equal(unidadeDeMedida.Ativo, ativo);
     }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    [InlineData(" ")]
+    public void ExceptionSeAbreviacaoVazia(string? abreviacao)
+    {
+        Action action = () =>
+            new Domain.Entity.UnidadeDeMedida.UnidadeDeMedida(abreviacao!, descricao:"Descrição válida");
+
+        Assert.Throws<EntityValidationException>(action);
+    }
+
+    // Abrevição: mínimo 1, máximo 6
+    // Descrição: mínimo 1, máximo 50
 }

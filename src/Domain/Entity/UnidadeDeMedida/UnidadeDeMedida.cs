@@ -1,4 +1,6 @@
-﻿namespace Domain.Entity.UnidadeDeMedida;
+﻿using Domain.Exceptions;
+
+namespace Domain.Entity.UnidadeDeMedida;
 
 public class UnidadeDeMedida
 {
@@ -15,5 +17,15 @@ public class UnidadeDeMedida
         Descricao = descricao;
         Ativo = ativo;
         CriadoEm = DateTime.Now;
+
+        Validate();
+    }
+
+    private void Validate()
+    {
+        if (string.IsNullOrWhiteSpace(Abreviacao))
+        {
+            throw new EntityValidationException($"{nameof(Abreviacao)} não pode ser vazio ou espaços em branco");
+        }
     }
 }
