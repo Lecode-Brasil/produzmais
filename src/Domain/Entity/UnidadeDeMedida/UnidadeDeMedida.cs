@@ -8,12 +8,12 @@ public class UnidadeDeMedida
     public bool Ativo { get; private set; }
     public DateTime CriadoEm { get; private set; }
 
-    public UnidadeDeMedida(string abreviacao, string descricao)
+    public UnidadeDeMedida(string abreviacao, string descricao, bool ativo = true)
     {
         Id = Guid.NewGuid();
         Abreviacao = abreviacao;
         Descricao = descricao;
-        Ativo = true;
+        Ativo = ativo;
         CriadoEm = DateTime.Now;
     }
 }
