@@ -65,6 +65,18 @@ public class UnidadeDeMedidaTest
         Assert.Throws<EntityValidationException>(action);
     }
 
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    [InlineData(" ")]
+    public void ExceptionSeDescricaoVazia(string? descricao)
+    {
+        Action action = () =>
+            new Domain.Entity.UnidadeDeMedida.UnidadeDeMedida(abreviacao:"VALID", descricao!);
+
+        Assert.Throws<EntityValidationException>(action);
+    }
+
     // Abrevição: mínimo 1, máximo 6
     // Descrição: mínimo 1, máximo 50
 }

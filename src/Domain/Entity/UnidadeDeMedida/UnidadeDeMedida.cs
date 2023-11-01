@@ -27,5 +27,10 @@ public class UnidadeDeMedida
         {
             throw new EntityValidationException($"{nameof(Abreviacao)} não pode ser vazio ou espaços em branco");
         }
+
+        if (string.IsNullOrWhiteSpace(Descricao))
+        {
+            throw new EntityValidationException($"{nameof(Descricao)} não pode ser vazio ou espaços em branco");
+        }
     }
 }
