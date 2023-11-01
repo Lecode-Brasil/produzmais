@@ -10,7 +10,11 @@ public class UnidadeDeMedida
     public bool Ativo { get; private set; }
     public DateTime CriadoEm { get; private set; }
 
-    public UnidadeDeMedida(string abreviacao, string descricao, bool ativo = true)
+    public UnidadeDeMedida(string abreviacao, string descricao) : this(abreviacao, descricao, ativo: true)
+    {
+    }
+
+    public UnidadeDeMedida(string abreviacao, string descricao, bool ativo)
     {
         Id = Guid.NewGuid();
         Abreviacao = abreviacao;
