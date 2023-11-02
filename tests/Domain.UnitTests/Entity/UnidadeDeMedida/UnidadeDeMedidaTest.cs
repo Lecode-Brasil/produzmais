@@ -17,7 +17,7 @@ public class UnidadeDeMedidaTest(UnidadeDeMedidaTestFixture unidadeDeMedidaTestF
 
         DomainEntity.UnidadeDeMedida unidadeDeMedida = new(unidadeDeMedidaValida.Abreviacao, unidadeDeMedidaValida.Descricao);
 
-        var dataDepois = DateTime.Now;
+        var dataDepois = DateTime.Now.AddSeconds(1);
 
         unidadeDeMedida.Should().NotBeNull();
         unidadeDeMedida.Abreviacao.Should().Be(unidadeDeMedidaValida.Abreviacao);
@@ -40,7 +40,7 @@ public class UnidadeDeMedidaTest(UnidadeDeMedidaTestFixture unidadeDeMedidaTestF
         DomainEntity.UnidadeDeMedida unidadeDeMedida =
             new(unidadeDeMedidaValida.Abreviacao, unidadeDeMedidaValida.Descricao, ativo);
 
-        var dataDepois = DateTime.Now;
+        var dataDepois = DateTime.Now.AddSeconds(1);
 
         unidadeDeMedida.Should().NotBeNull();
         unidadeDeMedida.Abreviacao.Should().Be(unidadeDeMedidaValida.Abreviacao);
