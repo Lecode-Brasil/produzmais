@@ -90,5 +90,16 @@ public class UnidadeDeMedidaTest
         var exception = Assert.Throws<EntityValidationException>(action);
         Assert.Equal("Abreviacao deve ter no máximo 6 caracteres", exception.Message);
     }
-    // Descrição: mínimo 1, máximo 50
+
+    [Fact]
+    public void ExceptionSeDescricaoMaiorQue50Caracteres()
+    {
+        var descricaoInvalida = new string(c: 'A', count: 51);
+
+        Action action = () =>
+            new Domain.Entity.UnidadeDeMedida.UnidadeDeMedida("PC", descricaoInvalida);
+
+        var exception = Assert.Throws<EntityValidationException>(action);
+        Assert.Equal("Descricao deve ter no máximo 50 caracteres", exception.Message);
+    }
 }

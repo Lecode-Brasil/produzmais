@@ -5,6 +5,7 @@ namespace Domain.Entity.UnidadeDeMedida;
 public class UnidadeDeMedida
 {
     private const int AbreviacaoMaxLength = 6;
+    private const int DescricaoMaxLength = 50;
 
     public Guid Id { get; private set; }
     public string Abreviacao { get; private set; }
@@ -30,11 +31,7 @@ public class UnidadeDeMedida
     private void Validate()
     {
         ValidateAbreviacao();
-
-        if (string.IsNullOrWhiteSpace(Descricao))
-        {
-            throw new EntityValidationException($"{nameof(Descricao)} não pode ser vazia ou espaços em branco");
-        }
+        ValidateDescricao();
     }
 
     private void ValidateAbreviacao()
@@ -48,6 +45,20 @@ public class UnidadeDeMedida
         {
             throw new EntityValidationException(
                 $"{nameof(Abreviacao)} deve ter no máximo {AbreviacaoMaxLength} caracteres");
+        }
+    }
+
+    private void ValidateDescricao()
+    {
+        if (string.IsNullOrWhiteSpace(Descricao))
+        {
+            throw new EntityValidationException($"{nameof(Descricao)} não pode ser vazia ou espaços em branco");
+        }
+
+        if (Descricao.Length > DescricaoMaxLength)
+        {
+            throw new EntityValidationException(
+                $"{nameof(Descricao)} deve ter no máximo {DescricaoMaxLength} caracteres");
         }
     }
 }
