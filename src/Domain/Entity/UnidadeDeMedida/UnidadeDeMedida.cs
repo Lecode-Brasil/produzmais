@@ -28,6 +28,18 @@ public class UnidadeDeMedida
         Validate();
     }
 
+    public void Ativar()
+    {
+        Ativo = true;
+        Validate();
+    }
+
+    public void Inativar()
+    {
+        Ativo = false;
+        Validate();
+    }
+
     private void Validate()
     {
         ValidateAbreviacao();

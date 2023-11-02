@@ -102,4 +102,34 @@ public class UnidadeDeMedidaTest
         var exception = Assert.Throws<EntityValidationException>(action);
         Assert.Equal("Descricao deve ter no máximo 50 caracteres", exception.Message);
     }
+
+    [Fact]
+    public void Ativar()
+    {
+        var validData = new
+        {
+            Abreviacao = "PC",
+            Descricao = "Peça",
+        };
+        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida =
+            new(validData.Abreviacao, validData.Descricao, ativo: false);
+        unidadeDeMedida.Ativar();
+
+        Assert.True(unidadeDeMedida.Ativo);
+    }
+
+    [Fact]
+    public void Inativar()
+    {
+        var validData = new
+        {
+            Abreviacao = "PC",
+            Descricao = "Peça",
+        };
+        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida =
+            new(validData.Abreviacao, validData.Descricao, ativo: true);
+        unidadeDeMedida.Inativar();
+
+        Assert.False(unidadeDeMedida.Ativo);
+    }
 }
