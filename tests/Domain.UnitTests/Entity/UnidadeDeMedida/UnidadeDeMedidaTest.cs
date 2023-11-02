@@ -1,4 +1,5 @@
 ﻿using Domain.Exceptions;
+using FluentAssertions;
 
 namespace Domain.UnitTests.Entity.UnidadeDeMedida;
 
@@ -18,13 +19,14 @@ public class UnidadeDeMedidaTest
 
         var dataDepois = DateTime.Now;
 
-        Assert.NotNull(unidadeDeMedida);
-        Assert.Equal(validData.Abreviacao, unidadeDeMedida.Abreviacao);
-        Assert.Equal(validData.Descricao, unidadeDeMedida.Descricao);
-        Assert.NotEqual(default(Guid), unidadeDeMedida.Id);
-        Assert.NotEqual(default(DateTime), unidadeDeMedida.CriadoEm);
-        Assert.InRange(unidadeDeMedida.CriadoEm, dataAntes, dataDepois);
-        Assert.True(unidadeDeMedida.Ativo);
+        unidadeDeMedida.Should().NotBeNull();
+        unidadeDeMedida.Abreviacao.Should().Be(validData.Abreviacao);
+        unidadeDeMedida.Descricao.Should().Be(validData.Descricao);
+        unidadeDeMedida.Id.Should().NotBe(default(Guid));
+        unidadeDeMedida.CriadoEm.Should().NotBe(default(DateTime));
+        unidadeDeMedida.CriadoEm.Should().BeAfter(dataAntes);
+        unidadeDeMedida.CriadoEm.Should().BeBefore(dataDepois);
+        unidadeDeMedida.Ativo.Should().BeTrue();
     }
 
     [Theory]
@@ -44,13 +46,14 @@ public class UnidadeDeMedidaTest
 
         var dataDepois = DateTime.Now;
 
-        Assert.NotNull(unidadeDeMedida);
-        Assert.Equal(validData.Abreviacao, unidadeDeMedida.Abreviacao);
-        Assert.Equal(validData.Descricao, unidadeDeMedida.Descricao);
-        Assert.NotEqual(default(Guid), unidadeDeMedida.Id);
-        Assert.NotEqual(default(DateTime), unidadeDeMedida.CriadoEm);
-        Assert.InRange(unidadeDeMedida.CriadoEm, dataAntes, dataDepois);
-        Assert.Equal(ativo, unidadeDeMedida.Ativo);
+        unidadeDeMedida.Should().NotBeNull();
+        unidadeDeMedida.Abreviacao.Should().Be(validData.Abreviacao);
+        unidadeDeMedida.Descricao.Should().Be(validData.Descricao);
+        unidadeDeMedida.Id.Should().NotBe(default(Guid));
+        unidadeDeMedida.CriadoEm.Should().NotBe(default(DateTime));
+        unidadeDeMedida.CriadoEm.Should().BeAfter(dataAntes);
+        unidadeDeMedida.CriadoEm.Should().BeBefore(dataDepois);
+        unidadeDeMedida.Ativo.Should().Be(ativo);
     }
 
     [Theory]
@@ -62,8 +65,8 @@ public class UnidadeDeMedidaTest
         Action action = () =>
             new Domain.Entity.UnidadeDeMedida.UnidadeDeMedida(abreviacao!, descricao:"Descrição válida");
 
-        var exception = Assert.Throws<EntityValidationException>(action);
-        Assert.Equal("Abreviacao não pode ser vazia ou espaços em branco", exception.Message);
+        action.Should().Throw<EntityValidationException>()
+            .WithMessage("Abreviacao não pode ser vazia ou espaços em branco");
     }
 
     [Theory]
@@ -75,8 +78,8 @@ public class UnidadeDeMedidaTest
         Action action = () =>
             new Domain.Entity.UnidadeDeMedida.UnidadeDeMedida(abreviacao:"VALID", descricao!);
 
-        var exception = Assert.Throws<EntityValidationException>(action);
-        Assert.Equal("Descricao não pode ser vazia ou espaços em branco", exception.Message);
+        action.Should().Throw<EntityValidationException>()
+            .WithMessage("Descricao não pode ser vazia ou espaços em branco");
     }
 
     [Fact]
@@ -87,8 +90,8 @@ public class UnidadeDeMedidaTest
         Action action = () =>
             new Domain.Entity.UnidadeDeMedida.UnidadeDeMedida(abreviacaoInvalida, descricao:"Descrição válida");
 
-        var exception = Assert.Throws<EntityValidationException>(action);
-        Assert.Equal("Abreviacao deve ter no máximo 6 caracteres", exception.Message);
+        action.Should().Throw<EntityValidationException>()
+            .WithMessage("Abreviacao deve ter no máximo 6 caracteres");
     }
 
     [Fact]
@@ -99,8 +102,8 @@ public class UnidadeDeMedidaTest
         Action action = () =>
             new Domain.Entity.UnidadeDeMedida.UnidadeDeMedida("PC", descricaoInvalida);
 
-        var exception = Assert.Throws<EntityValidationException>(action);
-        Assert.Equal("Descricao deve ter no máximo 50 caracteres", exception.Message);
+        action.Should().Throw<EntityValidationException>()
+            .WithMessage("Descricao deve ter no máximo 50 caracteres");
     }
 
     [Fact]
@@ -115,7 +118,7 @@ public class UnidadeDeMedidaTest
             new(validData.Abreviacao, validData.Descricao, ativo: false);
         unidadeDeMedida.Ativar();
 
-        Assert.True(unidadeDeMedida.Ativo);
+        unidadeDeMedida.Ativo.Should().BeTrue();
     }
 
     [Fact]
@@ -130,7 +133,7 @@ public class UnidadeDeMedidaTest
             new(validData.Abreviacao, validData.Descricao, ativo: true);
         unidadeDeMedida.Inativar();
 
-        Assert.False(unidadeDeMedida.Ativo);
+        unidadeDeMedida.Ativo.Should().BeFalse();
     }
 
     [Fact]
@@ -141,8 +144,8 @@ public class UnidadeDeMedidaTest
 
         unidadeDeMedida.Update(novosValores.Abreviacao, novosValores.Descricao);
 
-        Assert.Equal(novosValores.Abreviacao, unidadeDeMedida.Abreviacao);
-        Assert.Equal(novosValores.Descricao, unidadeDeMedida.Descricao);
+        unidadeDeMedida.Abreviacao.Should().Be(novosValores.Abreviacao);
+        unidadeDeMedida.Descricao.Should().Be(novosValores.Descricao);
     }
 
     [Theory]
@@ -155,8 +158,8 @@ public class UnidadeDeMedidaTest
 
         Action action = () => unidadeDeMedida.Update(abreviacao!, descricao: "Descrição válida");
 
-        var exception = Assert.Throws<EntityValidationException>(action);
-        Assert.Equal("Abreviacao não pode ser vazia ou espaços em branco", exception.Message);
+        action.Should().Throw<EntityValidationException>()
+            .WithMessage("Abreviacao não pode ser vazia ou espaços em branco");
     }
 
     [Theory]
@@ -168,8 +171,8 @@ public class UnidadeDeMedidaTest
         Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida = new("PC", "Peça");
         Action action = () => unidadeDeMedida.Update(abreviacao:"VALID", descricao!);
 
-        var exception = Assert.Throws<EntityValidationException>(action);
-        Assert.Equal("Descricao não pode ser vazia ou espaços em branco", exception.Message);
+        action.Should().Throw<EntityValidationException>()
+            .WithMessage("Descricao não pode ser vazia ou espaços em branco");
     }
 
     [Fact]
@@ -180,8 +183,8 @@ public class UnidadeDeMedidaTest
 
         Action action = () => unidadeDeMedida.Update(abreviacaoInvalida, descricao:"Descrição válida");
 
-        var exception = Assert.Throws<EntityValidationException>(action);
-        Assert.Equal("Abreviacao deve ter no máximo 6 caracteres", exception.Message);
+        action.Should().Throw<EntityValidationException>()
+            .WithMessage("Abreviacao deve ter no máximo 6 caracteres");
     }
 
     [Fact]
@@ -192,7 +195,7 @@ public class UnidadeDeMedidaTest
 
         Action action = () => unidadeDeMedida.Update("PC", descricaoInvalida);
 
-        var exception = Assert.Throws<EntityValidationException>(action);
-        Assert.Equal("Descricao deve ter no máximo 50 caracteres", exception.Message);
+        action.Should().Throw<EntityValidationException>()
+            .WithMessage("Descricao deve ter no máximo 50 caracteres");
     }
 }
