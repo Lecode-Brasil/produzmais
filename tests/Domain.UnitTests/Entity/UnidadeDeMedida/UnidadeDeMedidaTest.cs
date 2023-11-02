@@ -79,6 +79,16 @@ public class UnidadeDeMedidaTest
         Assert.Equal("Descricao não pode ser vazia ou espaços em branco", exception.Message);
     }
 
-    // Abrevição: mínimo 1, máximo 6
+    [Fact]
+    public void ExceptionSeAbreviacaoMaiorQue6Caracteres()
+    {
+        var abreviacaoInvalida = new string(c: 'A', count: 7);
+
+        Action action = () =>
+            new Domain.Entity.UnidadeDeMedida.UnidadeDeMedida(abreviacaoInvalida, descricao:"Descrição válida");
+
+        var exception = Assert.Throws<EntityValidationException>(action);
+        Assert.Equal("Abreviacao deve ter no máximo 6 caracteres", exception.Message);
+    }
     // Descrição: mínimo 1, máximo 50
 }
