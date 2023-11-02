@@ -4,6 +4,9 @@ using DomainEntity = Domain.Entity.UnidadeDeMedida;
 namespace Domain.UnitTests.Entity.UnidadeDeMedida;
 public class UnidadeDeMedidaTestFixture : BaseFixture
 {
+    public UnidadeDeMedidaTestFixture()
+    {
+    }
     public string GetValidUnidadeDeMedidaAbreviacao()
     {
         var abreviacao = Faker.Commerce.Categories(1).First();
