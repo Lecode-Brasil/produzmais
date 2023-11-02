@@ -1,29 +1,29 @@
 ﻿using Domain.Exceptions;
 using FluentAssertions;
+using DomainEntity = Domain.Entity.UnidadeDeMedida;
 
 namespace Domain.UnitTests.Entity.UnidadeDeMedida;
 
-public class UnidadeDeMedidaTest
+[Collection(nameof(UnidadeDeMedidaTestFixture))]
+public class UnidadeDeMedidaTest(UnidadeDeMedidaTestFixture unidadeDeMedidaTestFixture)
 {
+    private readonly UnidadeDeMedidaTestFixture _unidadeDeMedidaTestFixture = unidadeDeMedidaTestFixture;
+
     [Fact]
     public void InstanciaComAbreviacaoDescricao()
     {
-        var validData = new
-        {
-            Abreviacao = "PC",
-            Descricao = "Peça",
-        };
+        var unidadeDeMedidaValida = UnidadeDeMedidaTestFixture.GetValidUnidadeDeMedida();
         var dataAntes = DateTime.Now;
 
-        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida = new(validData.Abreviacao, validData.Descricao);
+        DomainEntity.UnidadeDeMedida unidadeDeMedida = new(unidadeDeMedidaValida.Abreviacao, unidadeDeMedidaValida.Descricao);
 
         var dataDepois = DateTime.Now;
 
         unidadeDeMedida.Should().NotBeNull();
-        unidadeDeMedida.Abreviacao.Should().Be(validData.Abreviacao);
-        unidadeDeMedida.Descricao.Should().Be(validData.Descricao);
+        unidadeDeMedida.Abreviacao.Should().Be(unidadeDeMedidaValida.Abreviacao);
+        unidadeDeMedida.Descricao.Should().Be(unidadeDeMedidaValida.Descricao);
         unidadeDeMedida.Id.Should().NotBe(default(Guid));
-        unidadeDeMedida.CriadoEm.Should().NotBe(default(DateTime));
+        unidadeDeMedida.CriadoEm.Should().NotBe(default);
         unidadeDeMedida.CriadoEm.Should().BeAfter(dataAntes);
         unidadeDeMedida.CriadoEm.Should().BeBefore(dataDepois);
         unidadeDeMedida.Ativo.Should().BeTrue();
@@ -34,23 +34,19 @@ public class UnidadeDeMedidaTest
     [InlineData(false)]
     public void InstanciaComAbreviacaoDescricaoAtivo(bool ativo)
     {
-        var validData = new
-        {
-            Abreviacao = "PC",
-            Descricao = "Peça",
-        };
+        var unidadeDeMedidaValida = UnidadeDeMedidaTestFixture.GetValidUnidadeDeMedida();
         var dataAntes = DateTime.Now;
 
-        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida =
-            new(validData.Abreviacao, validData.Descricao, ativo);
+        DomainEntity.UnidadeDeMedida unidadeDeMedida =
+            new(unidadeDeMedidaValida.Abreviacao, unidadeDeMedidaValida.Descricao, ativo);
 
         var dataDepois = DateTime.Now;
 
         unidadeDeMedida.Should().NotBeNull();
-        unidadeDeMedida.Abreviacao.Should().Be(validData.Abreviacao);
-        unidadeDeMedida.Descricao.Should().Be(validData.Descricao);
+        unidadeDeMedida.Abreviacao.Should().Be(unidadeDeMedidaValida.Abreviacao);
+        unidadeDeMedida.Descricao.Should().Be(unidadeDeMedidaValida.Descricao);
         unidadeDeMedida.Id.Should().NotBe(default(Guid));
-        unidadeDeMedida.CriadoEm.Should().NotBe(default(DateTime));
+        unidadeDeMedida.CriadoEm.Should().NotBe(default);
         unidadeDeMedida.CriadoEm.Should().BeAfter(dataAntes);
         unidadeDeMedida.CriadoEm.Should().BeBefore(dataDepois);
         unidadeDeMedida.Ativo.Should().Be(ativo);
@@ -63,7 +59,7 @@ public class UnidadeDeMedidaTest
     public void ExceptionSeAbreviacaoVazia(string? abreviacao)
     {
         Action action = () =>
-            new Domain.Entity.UnidadeDeMedida.UnidadeDeMedida(abreviacao!, descricao:"Descrição válida");
+            new DomainEntity.UnidadeDeMedida(abreviacao!, descricao: "Descrição válida");
 
         action.Should().Throw<EntityValidationException>()
             .WithMessage("Abreviacao não pode ser vazia ou espaços em branco");
@@ -76,7 +72,7 @@ public class UnidadeDeMedidaTest
     public void ExceptionSeDescricaoVazia(string? descricao)
     {
         Action action = () =>
-            new Domain.Entity.UnidadeDeMedida.UnidadeDeMedida(abreviacao:"VALID", descricao!);
+            new DomainEntity.UnidadeDeMedida(abreviacao:"VALID", descricao!);
 
         action.Should().Throw<EntityValidationException>()
             .WithMessage("Descricao não pode ser vazia ou espaços em branco");
@@ -88,7 +84,7 @@ public class UnidadeDeMedidaTest
         var abreviacaoInvalida = new string(c: 'A', count: 7);
 
         Action action = () =>
-            new Domain.Entity.UnidadeDeMedida.UnidadeDeMedida(abreviacaoInvalida, descricao:"Descrição válida");
+            new DomainEntity.UnidadeDeMedida(abreviacaoInvalida, descricao:"Descrição válida");
 
         action.Should().Throw<EntityValidationException>()
             .WithMessage("Abreviacao deve ter no máximo 6 caracteres");
@@ -100,7 +96,7 @@ public class UnidadeDeMedidaTest
         var descricaoInvalida = new string(c: 'A', count: 51);
 
         Action action = () =>
-            new Domain.Entity.UnidadeDeMedida.UnidadeDeMedida("PC", descricaoInvalida);
+            new DomainEntity.UnidadeDeMedida("PC", descricaoInvalida);
 
         action.Should().Throw<EntityValidationException>()
             .WithMessage("Descricao deve ter no máximo 50 caracteres");
@@ -109,13 +105,9 @@ public class UnidadeDeMedidaTest
     [Fact]
     public void Ativar()
     {
-        var validData = new
-        {
-            Abreviacao = "PC",
-            Descricao = "Peça",
-        };
-        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida =
-            new(validData.Abreviacao, validData.Descricao, ativo: false);
+        var unidadeDeMedidaValida = UnidadeDeMedidaTestFixture.GetValidUnidadeDeMedida();
+        DomainEntity.UnidadeDeMedida unidadeDeMedida =
+            new(unidadeDeMedidaValida.Abreviacao, unidadeDeMedidaValida.Descricao, ativo: false);
         unidadeDeMedida.Ativar();
 
         unidadeDeMedida.Ativo.Should().BeTrue();
@@ -124,13 +116,9 @@ public class UnidadeDeMedidaTest
     [Fact]
     public void Inativar()
     {
-        var validData = new
-        {
-            Abreviacao = "PC",
-            Descricao = "Peça",
-        };
-        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida =
-            new(validData.Abreviacao, validData.Descricao, ativo: true);
+        var unidadeDeMedidaValida = UnidadeDeMedidaTestFixture.GetValidUnidadeDeMedida();
+        DomainEntity.UnidadeDeMedida unidadeDeMedida =
+            new(unidadeDeMedidaValida.Abreviacao, unidadeDeMedidaValida.Descricao, ativo: true);
         unidadeDeMedida.Inativar();
 
         unidadeDeMedida.Ativo.Should().BeFalse();
@@ -139,7 +127,7 @@ public class UnidadeDeMedidaTest
     [Fact]
     public void Update()
     {
-        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida = new("PC", "Peça");
+        var unidadeDeMedida = UnidadeDeMedidaTestFixture.GetValidUnidadeDeMedida();
         var novosValores = new { Abreviacao = "UN", Descricao = "Unidade" };
 
         unidadeDeMedida.Update(novosValores.Abreviacao, novosValores.Descricao);
@@ -154,7 +142,7 @@ public class UnidadeDeMedidaTest
     [InlineData(" ")]
     public void UpdateExceptionSeAbreviacaoVazia(string? abreviacao)
     {
-        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida = new("PC", "Peça");
+        var unidadeDeMedida = UnidadeDeMedidaTestFixture.GetValidUnidadeDeMedida();
 
         Action action = () => unidadeDeMedida.Update(abreviacao!, descricao: "Descrição válida");
 
@@ -168,7 +156,7 @@ public class UnidadeDeMedidaTest
     [InlineData(" ")]
     public void UpdateExceptionSeDescricaoVazia(string? descricao)
     {
-        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida = new("PC", "Peça");
+        var unidadeDeMedida = UnidadeDeMedidaTestFixture.GetValidUnidadeDeMedida();
         Action action = () => unidadeDeMedida.Update(abreviacao:"VALID", descricao!);
 
         action.Should().Throw<EntityValidationException>()
@@ -179,7 +167,7 @@ public class UnidadeDeMedidaTest
     public void UpdateExceptionSeAbreviacaoMaiorQue6Caracteres()
     {
         var abreviacaoInvalida = new string(c: 'A', count: 7);
-        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida = new("PC", "Peça");
+        var unidadeDeMedida = UnidadeDeMedidaTestFixture.GetValidUnidadeDeMedida();
 
         Action action = () => unidadeDeMedida.Update(abreviacaoInvalida, descricao:"Descrição válida");
 
@@ -191,7 +179,7 @@ public class UnidadeDeMedidaTest
     public void UpdateExceptionSeDescricaoMaiorQue50Caracteres()
     {
         var descricaoInvalida = new string(c: 'A', count: 51);
-        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida = new("PC", "Peça");
+        var unidadeDeMedida = UnidadeDeMedidaTestFixture.GetValidUnidadeDeMedida();
 
         Action action = () => unidadeDeMedida.Update("PC", descricaoInvalida);
 
