@@ -29,12 +29,12 @@ public class UnidadeDeMedida
     {
         if (string.IsNullOrWhiteSpace(Abreviacao))
         {
-            throw new EntityValidationException($"{nameof(Abreviacao)} não pode ser vazio ou espaços em branco");
+            throw new EntityValidationException($"{nameof(Abreviacao)} não pode ser vazia ou espaços em branco");
         }
 
         if (string.IsNullOrWhiteSpace(Descricao))
         {
-            throw new EntityValidationException($"{nameof(Descricao)} não pode ser vazio ou espaços em branco");
+            throw new EntityValidationException($"{nameof(Descricao)} não pode ser vazia ou espaços em branco");
         }
     }
 }

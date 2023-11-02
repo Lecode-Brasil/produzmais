@@ -62,7 +62,8 @@ public class UnidadeDeMedidaTest
         Action action = () =>
             new Domain.Entity.UnidadeDeMedida.UnidadeDeMedida(abreviacao!, descricao:"Descrição válida");
 
-        Assert.Throws<EntityValidationException>(action);
+        var exception = Assert.Throws<EntityValidationException>(action);
+        Assert.Equal("Abreviacao não pode ser vazia ou espaços em branco", exception.Message);
     }
 
     [Theory]
@@ -74,7 +75,8 @@ public class UnidadeDeMedidaTest
         Action action = () =>
             new Domain.Entity.UnidadeDeMedida.UnidadeDeMedida(abreviacao:"VALID", descricao!);
 
-        Assert.Throws<EntityValidationException>(action);
+        var exception = Assert.Throws<EntityValidationException>(action);
+        Assert.Equal("Descricao não pode ser vazia ou espaços em branco", exception.Message);
     }
 
     // Abrevição: mínimo 1, máximo 6
