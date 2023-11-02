@@ -5,8 +5,8 @@ namespace Domain.Entity.UnidadeDeMedida;
 
 public class UnidadeDeMedida : AggregateRoot
 {
-    private const int AbreviacaoMaxLength = 6;
-    private const int DescricaoMaxLength = 50;
+    public const int AbreviacaoMaxLength = 6;
+    public const int DescricaoMaxLength = 50;
 
     public string Abreviacao { get; private set; }
     public string Descricao { get; private set; }
