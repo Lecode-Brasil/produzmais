@@ -1,13 +1,13 @@
 ﻿using Domain.Exceptions;
+using Domain.SeedWork;
 
 namespace Domain.Entity.UnidadeDeMedida;
 
-public class UnidadeDeMedida
+public class UnidadeDeMedida : AggregateRoot
 {
     private const int AbreviacaoMaxLength = 6;
     private const int DescricaoMaxLength = 50;
 
-    public Guid Id { get; private set; }
     public string Abreviacao { get; private set; }
     public string Descricao { get; private set; }
     public bool Ativo { get; private set; }
@@ -19,7 +19,6 @@ public class UnidadeDeMedida
 
     public UnidadeDeMedida(string abreviacao, string descricao, bool ativo)
     {
-        Id = Guid.NewGuid();
         Abreviacao = abreviacao;
         Descricao = descricao;
         Ativo = ativo;
