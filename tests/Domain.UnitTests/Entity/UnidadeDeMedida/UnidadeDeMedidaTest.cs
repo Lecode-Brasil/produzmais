@@ -132,4 +132,67 @@ public class UnidadeDeMedidaTest
 
         Assert.False(unidadeDeMedida.Ativo);
     }
+
+    [Fact]
+    public void Update()
+    {
+        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida = new("PC", "Peça");
+        var novosValores = new { Abreviacao = "UN", Descricao = "Unidade" };
+
+        unidadeDeMedida.Update(novosValores.Abreviacao, novosValores.Descricao);
+
+        Assert.Equal(novosValores.Abreviacao, unidadeDeMedida.Abreviacao);
+        Assert.Equal(novosValores.Descricao, unidadeDeMedida.Descricao);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    [InlineData(" ")]
+    public void UpdateExceptionSeAbreviacaoVazia(string? abreviacao)
+    {
+        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida = new("PC", "Peça");
+
+        Action action = () => unidadeDeMedida.Update(abreviacao!, descricao: "Descrição válida");
+
+        var exception = Assert.Throws<EntityValidationException>(action);
+        Assert.Equal("Abreviacao não pode ser vazia ou espaços em branco", exception.Message);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    [InlineData(" ")]
+    public void UpdateExceptionSeDescricaoVazia(string? descricao)
+    {
+        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida = new("PC", "Peça");
+        Action action = () => unidadeDeMedida.Update(abreviacao:"VALID", descricao!);
+
+        var exception = Assert.Throws<EntityValidationException>(action);
+        Assert.Equal("Descricao não pode ser vazia ou espaços em branco", exception.Message);
+    }
+
+    [Fact]
+    public void UpdateExceptionSeAbreviacaoMaiorQue6Caracteres()
+    {
+        var abreviacaoInvalida = new string(c: 'A', count: 7);
+        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida = new("PC", "Peça");
+
+        Action action = () => unidadeDeMedida.Update(abreviacaoInvalida, descricao:"Descrição válida");
+
+        var exception = Assert.Throws<EntityValidationException>(action);
+        Assert.Equal("Abreviacao deve ter no máximo 6 caracteres", exception.Message);
+    }
+
+    [Fact]
+    public void UpdateExceptionSeDescricaoMaiorQue50Caracteres()
+    {
+        var descricaoInvalida = new string(c: 'A', count: 51);
+        Domain.Entity.UnidadeDeMedida.UnidadeDeMedida unidadeDeMedida = new("PC", "Peça");
+
+        Action action = () => unidadeDeMedida.Update("PC", descricaoInvalida);
+
+        var exception = Assert.Throws<EntityValidationException>(action);
+        Assert.Equal("Descricao deve ter no máximo 50 caracteres", exception.Message);
+    }
 }

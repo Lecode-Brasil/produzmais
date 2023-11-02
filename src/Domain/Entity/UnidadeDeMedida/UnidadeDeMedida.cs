@@ -40,6 +40,13 @@ public class UnidadeDeMedida
         Validate();
     }
 
+    public void Update(string abreviacao, string descricao)
+    {
+        Abreviacao = abreviacao;
+        Descricao = descricao;
+        Validate();
+    }
+
     private void Validate()
     {
         ValidateAbreviacao();
