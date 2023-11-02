@@ -50,7 +50,7 @@ public class UnidadeDeMedidaTest
         Assert.NotEqual(default(Guid), unidadeDeMedida.Id);
         Assert.NotEqual(default(DateTime), unidadeDeMedida.CriadoEm);
         Assert.InRange(unidadeDeMedida.CriadoEm, dataAntes, dataDepois);
-        Assert.Equal(unidadeDeMedida.Ativo, ativo);
+        Assert.Equal(ativo, unidadeDeMedida.Ativo);
     }
 
     [Theory]
