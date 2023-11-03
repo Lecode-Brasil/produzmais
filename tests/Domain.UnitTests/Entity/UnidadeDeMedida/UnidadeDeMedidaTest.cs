@@ -65,7 +65,7 @@ public class UnidadeDeMedidaTest(UnidadeDeMedidaTestFixture unidadeDeMedidaTestF
                 descricao: _unidadeDeMedidaTestFixture.GetValidUnidadeDeMedidaDescricao());
 
         action.Should().Throw<EntityValidationException>()
-            .WithMessage("Abreviacao não pode ser vazia ou espaços em branco");
+            .WithMessage("Abreviacao não pode ser nulo, vazio ou apenas espaços");
     }
 
     [Theory]
@@ -80,7 +80,7 @@ public class UnidadeDeMedidaTest(UnidadeDeMedidaTestFixture unidadeDeMedidaTestF
                 descricao!);
 
         action.Should().Throw<EntityValidationException>()
-            .WithMessage("Descricao não pode ser vazia ou espaços em branco");
+            .WithMessage("Descricao não pode ser nulo, vazio ou apenas espaços");
     }
 
     [Fact]
@@ -158,7 +158,7 @@ public class UnidadeDeMedidaTest(UnidadeDeMedidaTestFixture unidadeDeMedidaTestF
             descricao: _unidadeDeMedidaTestFixture.GetValidUnidadeDeMedidaDescricao());
 
         action.Should().Throw<EntityValidationException>()
-            .WithMessage("Abreviacao não pode ser vazia ou espaços em branco");
+            .WithMessage("Abreviacao não pode ser nulo, vazio ou apenas espaços");
     }
 
     [Theory]
@@ -173,7 +173,7 @@ public class UnidadeDeMedidaTest(UnidadeDeMedidaTestFixture unidadeDeMedidaTestF
             descricao!);
 
         action.Should().Throw<EntityValidationException>()
-            .WithMessage("Descricao não pode ser vazia ou espaços em branco");
+            .WithMessage("Descricao não pode ser nulo, vazio ou apenas espaços");
     }
 
     [Fact]

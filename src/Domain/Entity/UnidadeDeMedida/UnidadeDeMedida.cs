@@ -1,5 +1,6 @@
 ﻿using Domain.Exceptions;
 using Domain.SeedWork;
+using Domain.Validation;
 
 namespace Domain.Entity.UnidadeDeMedida;
 
@@ -48,35 +49,9 @@ public class UnidadeDeMedida : AggregateRoot
 
     private void Validate()
     {
-        ValidateAbreviacao();
-        ValidateDescricao();
-    }
-
-    private void ValidateAbreviacao()
-    {
-        if (string.IsNullOrWhiteSpace(Abreviacao))
-        {
-            throw new EntityValidationException($"{nameof(Abreviacao)} não pode ser vazia ou espaços em branco");
-        }
-
-        if (Abreviacao.Length > AbreviacaoMaxLength)
-        {
-            throw new EntityValidationException(
-                $"{nameof(Abreviacao)} deve ter no máximo {AbreviacaoMaxLength} caracteres");
-        }
-    }
-
-    private void ValidateDescricao()
-    {
-        if (string.IsNullOrWhiteSpace(Descricao))
-        {
-            throw new EntityValidationException($"{nameof(Descricao)} não pode ser vazia ou espaços em branco");
-        }
-
-        if (Descricao.Length > DescricaoMaxLength)
-        {
-            throw new EntityValidationException(
-                $"{nameof(Descricao)} deve ter no máximo {DescricaoMaxLength} caracteres");
-        }
+        DomainValidation.NotNullOrWhiteSpace(Abreviacao, nameof(Abreviacao));
+        DomainValidation.MaxLength(Abreviacao, AbreviacaoMaxLength, nameof(Abreviacao));
+        DomainValidation.NotNullOrWhiteSpace(Descricao, nameof(Descricao));
+        DomainValidation.MaxLength(Descricao, DescricaoMaxLength, nameof(Descricao));
     }
 }
