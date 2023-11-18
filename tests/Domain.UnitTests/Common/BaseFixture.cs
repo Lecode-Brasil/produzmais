@@ -1,6 +1,6 @@
 ﻿using Bogus;
 
-namespace Domain.UnitTests.Common;
+namespace UnitTests.Common;
 public abstract class BaseFixture
 {
     public Faker Faker { get; set; }

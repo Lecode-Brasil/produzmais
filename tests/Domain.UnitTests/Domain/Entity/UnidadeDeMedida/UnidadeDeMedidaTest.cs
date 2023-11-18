@@ -2,7 +2,7 @@
 using FluentAssertions;
 using DomainEntity = Domain.Entity.UnidadeDeMedida;
 
-namespace Domain.UnitTests.Entity.UnidadeDeMedida;
+namespace UnitTests.Domain.Entity.UnidadeDeMedida;
 
 [Collection(nameof(UnidadeDeMedidaTestFixture))]
 public class UnidadeDeMedidaTest(UnidadeDeMedidaTestFixture unidadeDeMedidaTestFixture)

@@ -1,7 +1,7 @@
-﻿using Domain.UnitTests.Common;
+﻿using UnitTests.Common;
 using DomainEntity = Domain.Entity.UnidadeDeMedida;
 
-namespace Domain.UnitTests.Entity.UnidadeDeMedida;
+namespace UnitTests.Domain.Entity.UnidadeDeMedida;
 public class UnidadeDeMedidaTestFixture : BaseFixture
 {
     public UnidadeDeMedidaTestFixture()
@@ -19,7 +19,7 @@ public class UnidadeDeMedidaTestFixture : BaseFixture
     }
 
     public DomainEntity.UnidadeDeMedida GetValidUnidadeDeMedida() =>
-        new (
+        new(
             GetValidUnidadeDeMedidaAbreviacao(),
             GetValidUnidadeDeMedidaDescricao());
 }

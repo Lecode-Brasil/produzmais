@@ -3,7 +3,7 @@ using Domain.Exceptions;
 using Domain.Validation;
 using FluentAssertions;
 
-namespace Domain.UnitTests.Validation;
+namespace UnitTests.Domain.Validation;
 public class DomainValidationTest
 {
     private readonly Faker _faker = new();
@@ -71,8 +71,8 @@ public class DomainValidationTest
         var faker = new Faker();
         for (int i = 0; i < numberOfTests; i++)
         {
-            var example  = faker.Commerce.ProductName();
-            var maxLength = example.Length - (new Random()).Next(1, 5);
+            var example = faker.Commerce.ProductName();
+            var maxLength = example.Length - new Random().Next(1, 5);
             yield return new object[] { example, maxLength };
         }
     }
@@ -95,7 +95,7 @@ public class DomainValidationTest
         for (int i = 0; i < numberOfTests; i++)
         {
             var example = faker.Commerce.ProductName();
-            var maxLength = example.Length + (new Random()).Next(1, 5);
+            var maxLength = example.Length + new Random().Next(1, 5);
             yield return new object[] { example, maxLength };
         }
     }
